@@ -1,0 +1,69 @@
+CREATE TABLE `leerlingen_data` (
+  `leerling_id` int(11) NOT NULL,
+  `voor_naam` varchar(100) NOT NULL,
+  `achter_naam` varchar(100) NOT NULL,
+  `geboorte_datum` date NOT NULL,
+  `contact_gegevens_id` int(11) NOT NULL,
+  `telefoon_nummer` int(10) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `leerling_sinds` date NOT NULL,
+  `klas_id` int(11) NOT NULL
+)
+
+
+
+CREATE TABLE `contact_data` (
+  `contact_gegevens_id` int(11) NOT NULL,
+  `verzorger_1` varchar(100) NOT NULL,
+  `verzorger_2` varchar(100) NOT NULL,
+  `verzorger_1_tel` int(10) NOT NULL,
+  `verzorger_2_tel` int(10) NOT NULL,
+  `verzorger_1_email` varchar(100) NOT NULL,
+  `verzorger_2_email` varchar(100) NOT NULL,
+  `verzorger_1_adres` varchar(100) NOT NULL,
+  `verzorger_2_adres` varchar(100) NOT NULL,
+  `comment` varchar(255) NOT NULL
+)
+
+CREATE TABLE `leraren_data` (
+  `leraar_id` int(11) NOT NULL,
+  `voor_naam` varchar(100) NOT NULL,
+  `achter_naam` varchar(100) NOT NULL,
+  `tel_nummer` int(10) NOT NULL,
+  `adres` varchar(100) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `bank` varchar(15) NOT NULL,
+  `in_dienst_sinds` date NOT NULL,
+  `uren_week` int(2) NOT NULL
+)
+
+CREATE TABLE `klas_data` (
+  `klas_id` int(11) NOT NULL,
+  `mentor_id` int(11) NOT NULL,
+  `klas_lokaal` int(11) NOT NULL
+)
+
+CREATE TABLE `cijfers_data` (
+  `voort_gang` int(11) NOT NULL,
+  `leerling_id` int(11) NOT NULL,
+  `les_id` int(11) NOT NULL,
+  `datum` date NOT NULL,
+  `cijfer` int(2) NOT NULL
+)
+
+ALTER TABLE `leerlingen_data`
+  ADD CONSTRAINT `leerlingen_data_ibfk_1` FOREIGN KEY (`contact_gegevens_id`) REFERENCES `contact_data` (`contact_gegevens_id`),
+  ADD CONSTRAINT `leerlingen_data_ibfk_2` FOREIGN KEY (`klas_id`) REFERENCES `klas_data` (`klas_id`);
+
+  
+ALTER TABLE `klas_data`
+  ADD CONSTRAINT `klas_data_ibfk_1` FOREIGN KEY (`mentor_id`) REFERENCES `leraren_data` (`leraar_id`);
+  
+
+ALTER TABLE `cijfers_data`
+  ADD CONSTRAINT `cijfers_data_ibfk_1` FOREIGN KEY (`leerling_id`) REFERENCES `leerlingen_data` (`leerling_id`),
+  ADD CONSTRAINT `cijfers_data_ibfk_2` FOREIGN KEY (`les_id`) REFERENCES `les_data` (`les_id`);
+  
+ALTER TABLE `les_data`
+  ADD CONSTRAINT `les_data_ibfk_1` FOREIGN KEY (`leraar_id`) REFERENCES `leraren_data` (`leraar_id`);
+  
